@@ -1,5 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-data-table/iron-data-table.html">
+<link rel="import" href="../oc-grid-controls/oc-grid-controls.html">
+
+
 <!--
 `oc-pending-invites`
 Element to view a list of pending staff invites on the Ordercloud platform
@@ -9,12 +14,31 @@ Element to view a list of pending staff invites on the Ordercloud platform
 
 <dom-module id="oc-pending-invites">
   <template>
-    <style>
+    <style include="oc-iron-data-table-styles">
       :host {
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <oc-grid-controls data="[[ items ]]" total-count="[[ totalItems ]]" num-entries="[[ pageSize ]]">
+      <iron-data-table
+              id="dataTable"
+              current-page="[[ currentPage ]]"
+              loading="{{ loading }}">
+        <data-table-column name="Email" sort-by="email">
+          <template>[[item.email]]</template>
+        </data-table-column>
+        <data-table-column name="Actions">
+          <template>
+            <div data-option-object$="[[ item ]]">
+              <paper-icon-button id="resend" title="Resend Invite"  on-tap="_actionHandler"></paper-icon-button>
+            </div>
+          </template>
+        </data-table-column>
+      </iron-data-table>
+    </oc-grid-controls>
+
+
   </template>
 
   <script>
@@ -23,10 +47,24 @@ Element to view a list of pending staff invites on the Ordercloud platform
       is: 'oc-pending-invites',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'oc-pending-invites',
+        loading: {
+          type: Boolean,
+          notify: true
         },
+        items: Array,
+        totalItems: Number,
+        pageSize: Number,
+        currentPage: Number,
+      },
+
+      _onPageRequest: function(event) {
+        this.fire('page-request', event);
+      },
+
+      _actionHandler: function(e) {
+        var extraObj = JSON.parse(Polymer.dom(e).localTarget.parentElement.getAttribute('data-option-object')),
+                action = e.target.getAttribute('id');
+        this.fire(action, extraObj);
       },
 
     });
