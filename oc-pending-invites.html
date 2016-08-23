@@ -2,7 +2,7 @@
 
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../iron-data-table/iron-data-table.html">
-<link rel="import" href="../oc-iron-data-table-styles/oc-iron-data-table-styless.html">
+<link rel="import" href="../oc-iron-data-table-styles/oc-iron-data-table-styles.html">
 <link rel="import" href="../oc-grid-controls/oc-grid-controls.html">
 
 
@@ -10,7 +10,7 @@
 `oc-pending-invites`
 Element to view a list of pending staff invites on the Ordercloud platform
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="oc-pending-invites">
@@ -32,7 +32,7 @@ Element to view a list of pending staff invites on the Ordercloud platform
         <data-table-column name="Actions">
           <template>
             <div data-option-object$="[[ item ]]">
-              <paper-icon-button id="resend" title="Resend Invite"  on-tap="_actionHandler"></paper-icon-button>
+              <paper-button raised id="resend" title="Resend Invite"  on-tap="_actionHandler">Resend</paper-button>
             </div>
           </template>
         </data-table-column>
